@@ -27,11 +27,11 @@ section {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
     overflow: hidden;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.507);
     transition: width .3s, height .3s;
     transition-timing-function: ease;
+    transform: translate(-50%, -50%);
 }
 
 div#imagem {
@@ -51,6 +51,7 @@ div#formulario {
 
 div#formulario > h1 {
     text-align: center;
+    margin-bottom: 10px;
     
 }
 
@@ -170,7 +171,7 @@ form > a.botao > span {
     
     section {
         width: 950px;
-        height: 350px;
+        height: 340px;
 
     }
     div#imagem {
@@ -183,4 +184,11 @@ form > a.botao > span {
         float: left;
         width: 50%;
     }
+    
+    div#formulario > p#msg {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    
+    
+}
 }
