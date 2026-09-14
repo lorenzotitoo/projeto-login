@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="stylecadastro.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <main>
+        <section id="login">
+            <div id="imagem">
+                
+            </div>
+        
+            <div id="formulario">
+                <h1>Cadastro</h1>
+                <p id="msg">Seja bem-vindo(a). Crie sua conta abaixo.</p>
+                <form id="form-cadastro" autocomplete="on">
+                    <div class="campo">
+                        <span class="material-icons">person</span>
+                        <label for="inome">
+                            <input type="text" name="nome" id="inome" placeholder="seu nome" required minlength="3" maxlength="30">
+                        </label>
+                    </div>
+                    
+                    <div class="campo">
+                        <span class="material-icons">email</span>
+                        <label for="iemail">
+                            <input type="email" name="email" id="iemail" placeholder="seu e-mail" autocomplete="email" required maxlength="40">
+                        </label>
+                    </div>
+                    <div class="campo">
+                        <span class="material-icons icone-campo">key</span>
+                        <label for="isenha">
+                            <input type="password" name="senha" id="isenha" placeholder="sua senha" autocomplete="new-password" required minlength="6">
+                        </label>
+                        <span class="material-icons toggle-senha" id="toggle-isenha">visibility_off</span>
+                    </div>
+                    <div class="campo">
+                        <span class="material-icons icone-campo">key</span>
+                        <label for="iconfirmasenha">
+                            <input type="password" name="confirmasenha" id="iconfirmasenha" placeholder="confirme sua senha" autocomplete="new-password" required minlength="6">
+                        </label>
+                        <span class="material-icons toggle-senha" id="toggle-iconfirmasenha">visibility_off</span>
+                    </div>
+                    <button id="join" type="submit">Cadastrar</button>
+                    <p id="mensagem-erro" style="color: red;"></p>
+                    <a class="botao" href="../index.html">Já possuo conta. </a>
+                    
+                </form>
+            
+            </div>
+        </section>
+
+        
+    </main>
+    <script src="scriptcad.js"></script>
+</body>
+</html>

@@ -2,14 +2,15 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
+from pathlib import Path
 
 app = Flask(__name__)
 CORS(app)
 
-
+CAMINHO_BANCO = Path(__file__).parent / 'usuarios.db'
 
 def conectar_banco():
-    conexao = sqlite3.connect("usuarios.db")
+    conexao = sqlite3.connect(str(CAMINHO_BANCO))
     conexao.row_factory = sqlite3.Row
     return conexao
 

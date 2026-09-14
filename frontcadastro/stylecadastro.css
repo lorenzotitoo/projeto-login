@@ -1,4 +1,4 @@
-@charset "UTF-8" ;
+@charset "UTF-8";
 
 * {
     padding: 0;
@@ -22,7 +22,7 @@ main {
 section {
     background-color: white;
     width: 250px;
-    height: 570px;
+    height: 600px;
     border-radius: 20px;
     position: absolute;
     top: 50%;
@@ -35,7 +35,7 @@ section {
 }
 
 div#imagem {
-    background: url(metal.jpg) no-repeat;
+    background: url('../metal.jpg') no-repeat;
     background-position: left bottom;
     background-size: cover;
     height: 200px;
@@ -69,15 +69,23 @@ form > div.campo {
     height: 40px;
     margin: 5px 0px;
     border: 2px solid #5f2c82;
+    display: flex;          /* NOVO: organiza os filhos em linha */
+    align-items: center;
 
 }
 
-div.campo > span {
+div.campo > span.icone-campo {
     color: white;
     font-size: 2em;
     width: 40px;
     padding: 5px;
+    flex-shrink: 0; 
     
+}
+
+div.campo > label {
+    flex: 1;                /* NOVO: o label ocupa todo o espaço restante */
+    height: 100%;
 }
 
 input {
@@ -87,14 +95,22 @@ input {
     border: 0px;
     height: 100%;
     padding: 4px;
-    width: calc(100% - 45px);
-    transform: translateY(-12px);
+    width: 100%;
     
 }
 
-input:focus-within {
+input:focus {
     background-color: white;
     border: none;
+}
+
+div.campo > span.toggle-senha {
+    color: white;
+    font-size: 1.3em;       
+    width: 30px;
+    flex-shrink: 0;
+    text-align: center;
+    cursor: pointer;        
 }
 
 button#join {
@@ -126,7 +142,6 @@ form > a.botao {
     border: 1px solid rgb(0, 156, 156);
     padding: 10px;
     margin-bottom: 5px;
-    font-size: 14px;
     
 }
 
@@ -150,7 +165,7 @@ form > a.botao > span {
     
     section {
         width: 80vw;
-        height: 320px;
+        height: 370px;
     }
 
     div#imagem {
@@ -173,7 +188,7 @@ form > a.botao > span {
     
     section {
         width: 950px;
-        height: 365px;
+        height: 380px;
 
     }
     div#imagem {
