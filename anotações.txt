@@ -1,0 +1,11 @@
+email strip lower, perguntar sobre como deve ser armazenado para comparar do jeito correto 
+novo_id = 1 if len(lista_usuarios) == 0 else lista_usuarios[-1]["id"] + 1
+
+fetchall: todas linhas da consulta a tabela em tuplas/
+fetchmany(n): numero de linhas
+fetchone: apenas a primeira q aparece (bom para saber se existe ou nao existe)
+lastrowid: pega o id gerado automaticamente pelo usuario
+
+FINALLY após Try e Except: o bloco roda SEMPRE, independente de Try ou Except.
+
+perguntar diferente entre !resposta ok e tmb inner text ou text.context

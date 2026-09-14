@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="style.css">
-     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
     <main>
@@ -17,20 +17,21 @@
             <div id="formulario">
                 <h1>Login</h1>
                 <p id="msg">Seja bem-vindo(a) novamente. Faça login para acessar sua conta e poder fazer as configurações no seu ambiente.</p>
-                <form action="login.php" method="post" autocomplete="on">
+                <form id="form-login" autocomplete="on">
                     <div class="campo">
                         <span class="material-icons">person</span>
                         <label for="iemail">
-                            <input type="email" name="email" id="iemail" placeholder="seu e-mail" autocomplete="email" required maxlenghh="40">
+                            <input type="email" name="email" id="iemail" placeholder="seu e-mail" autocomplete="email" required maxlength="40">
                         </label>
                     </div>
                     <div class="campo">
                         <span class="material-icons">key</span>
                         <label for="isenha">
-                            <input type="password" name="senha" id="isenha" placeholder="sua senha" autocomplete="current-password" required minlength="7">
+                            <input type="password" name="senha" id="isenha" placeholder="sua senha" autocomplete="current-password" required minlength="6">
                         </label>
                     </div>
                     <button id="join" type="submit">Entrar</button>
+                    <p id="mensagem-erro" style="color: red;"></p>
                     <a class="botao" href="esqueci.html">
                         Esqueci a senha <span class="material-icons">mail</span>
                     </a>
@@ -42,5 +43,6 @@
 
         
     </main>
+    <script src="script.js"></script>
 </body>
 </html>
