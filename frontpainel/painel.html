@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel</title>
+</head>
+<body>
+    <h1>Painel</h1>
+    <p>Bem-vindo(a), <span id="nome-usuario"></span>!</p>
+    <p>E-mail: <span id="email-usuario"></span></p>
+    
+    
+    <h2>Edite seu perfil:</h2>
+    <form id="form-editar">
+        <label for="novo-nome">
+            <input type="text" name="nome" id="novo-nome" placeholder="seu nome" required minlength="3" maxlength="30">
+        </label> <br>
+        <label for="nova-senha">
+            <input type="password" name="senha" id="nova-senha" placeholder="nova senha" autocomplete="current-password" required minlength="6">
+        </label> <br>
+        <label for="confirma-senha">
+            <input type="password" name="confirmasenha" id="confirma-senha" placeholder="confirme sua senha" autocomplete="new-password" required minlength="6">
+        </label>
+        <button type="submit" id="btn-editar">Editar</button> <br>
+        <p id="msg-editar"></p>
+    </form>
+    
+    <button id="btn-deletar">Deletar Perfil</button> <br>
+    <button id="sair">Sair</button>
+    
+    
+    <script src="painel.js"></script>
+</body>
+</html>

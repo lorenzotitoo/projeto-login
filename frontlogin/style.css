@@ -35,7 +35,7 @@ section {
 }
 
 div#imagem {
-    background: url(metal.jpg) no-repeat;
+    background: url(../metal.jpg) no-repeat;
     background-position: left bottom;
     background-size: cover;
     height: 200px;

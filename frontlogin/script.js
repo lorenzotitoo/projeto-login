@@ -32,14 +32,16 @@ formulario.addEventListener('submit', async function(evento) {
 
         }
 
+        localStorage.setItem("token", dadosResposta.token);
         localStorage.setItem("usuarioLogado", JSON.stringify(dadosResposta.usuario))
         setTimeout(() => {
-                window.location.href = "dashboard.html"; 
+                window.location.href = "/frontpainel/painel.html"; 
                 botaoEntrar.disabled = false;
             }, 1000);
     } catch (erro) {
         textoErro.textContent = "Não foi possível conectar ao servidor.";
         console.error(erro);
+        botaoEntrar.disabled = false;
     } 
 
-})
+});

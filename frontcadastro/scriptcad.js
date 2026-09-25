@@ -12,9 +12,9 @@ formulario.addEventListener("submit", async function(evento) {
     textoErro.style.color = "red";
 
     const nome = inputNome.value;
-    const email = inputEmail.value 
-    const senha = inputSenha.value 
-    const confirmaSenha = inputConfirmaSenha.value  
+    const email = inputEmail.value;
+    const senha = inputSenha.value ;
+    const confirmaSenha = inputConfirmaSenha.value  ;
 
     if ( senha !== confirmaSenha) {
         textoErro.textContent = "As senhas não coincidem"
@@ -40,12 +40,16 @@ formulario.addEventListener("submit", async function(evento) {
             return;
         }
 
-        textoErro.style.color = "green"
+        textoErro.style.color = "green";
         textoErro.textContent = "Cadastro realizado! Redirecionando para o login...";
 
+        console.log("Iniciando a contagem de 1.5 segundos...");
+
         setTimeout(() => {
-            window.location.href = "../index.html";
-        }, 1500);
+            console.log("Redirecionando agora para:", "../frontlogin/index.html");
+            window.location.href = "../frontlogin/index.html";
+
+        }, 2000);
     } catch (erro) {
         textoErro.textContent = "Não foi possível conectar ao servidor.";
         console.error(erro);
