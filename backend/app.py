@@ -1,11 +1,24 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import sqlite3
+import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from pathlib import Path
+from dotenv import load_dotenv
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+
+
+load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+
+CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:5500", "http://localhost:5500"]}})
+
+app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+if not app.config['JWT_SECRET_KEY']:
+    raise RuntimeError("JWT_SECRET_KEY não foi definida no .env")
+
+jwt = JWTManager(app)
 
 CAMINHO_BANCO = Path(__file__).parent / 'usuarios.db'
 
@@ -118,9 +131,11 @@ def login():
         elif not check_password_hash(usuario['senha'], senha_recebida):
             return jsonify({"erro": "E-mail ou senha incorretos"}), 401
         else:
+            token_acesso = create_access_token(identity=str(usuario['id']))
             return jsonify({
                 "status" : "sucesso",
                 "mensagem" : f"Bem vindo(a),{usuario['nome']}!",
+                "token" : token_acesso,
                 "usuario": {
                 "id": usuario['id'],
                 "nome": usuario['nome'],
@@ -130,6 +145,97 @@ def login():
 
     finally:
         conexao.close()
+
+@app.route('/perfil', methods=['GET'])
+@jwt_required()
+def perfil():
+    id_usuario = get_jwt_identity()
+
+    try:
+        conexao = conectar_banco()
+        cursor = conexao.cursor()
+        cursor.execute('SELECT id, nome, email FROM usuarios WHERE id = ?', (id_usuario,))
+        usuario = cursor.fetchone()
+    finally:
+        conexao.close()
+
+    if usuario is None:
+        return jsonify({"erro": "Usuário não encontrado"}), 404
+
+    return jsonify({
+        "id": usuario['id'],
+        "nome": usuario['nome'],
+        "email": usuario['email']
+    }), 200
+
+@app.route('/usuarios/<int:id_parametro>', methods=['PUT'])
+@jwt_required()
+def atualizar_usuario(id_parametro):
+    id_usuario = get_jwt_identity()
+
+    if str(id_usuario) != str(id_parametro):
+        return jsonify({"erro": "Acesso negado. Você só pode alterar sua própria conta."}),403
+
+    dados = request.get_json()
+    if not dados:
+        return jsonify({"erro": "Nenhum dado fornecido"}), 400
+    nome_novo = dados.get('nome')
+    senha_nova = dados.get('senha')
+
+    try:
+        conexao = conectar_banco()
+        cursor = conexao.cursor()
+
+        if nome_novo and senha_nova:
+            senha_hash = generate_password_hash(senha_nova)
+            cursor.execute('UPDATE usuarios SET nome = ?, senha = ? WHERE id = ?', (nome_novo.strip(), senha_hash, id_parametro))
+        elif nome_novo:
+            cursor.execute('UPDATE usuarios SET nome = ? WHERE id = ?', (nome_novo.strip(), id_parametro))
+        elif senha_nova:
+            senha_hash = generate_password_hash(senha_nova)
+            cursor.execute('UPDATE usuarios SET senha = ? WHERE id = ?', (senha_hash, id_parametro))
+        else:
+            return jsonify({"erro": "Envie pelo menos um nome ou uma senha para atualizar os dados"}),400
+
+        if cursor.rowcount == 0:
+            return jsonify({"erro": "usuário não encontrado"}), 404
+
+        conexao.commit()
+        return jsonify({"mensagem": "Dados atualizados com sucesso!"}), 200
+        
+    except Exception as e:
+        return jsonify({"erro": "Erro ao atualizar no banco de dados"}), 500
+    finally:
+        conexao.close()
+
+
+@app.route('/usuarios/<int:id_parametro>', methods=['DELETE'])
+@jwt_required()
+def deletar_usuario(id_parametro):
+    id_usuario = get_jwt_identity()
+    if str(id_usuario) != str(id_parametro):
+        return jsonify({"erro": "Acesso negado."})
+
+    try:
+        conexao = conectar_banco()
+        cursor = conexao.cursor()
+        cursor.execute('DELETE from usuarios where ID = ?', (id_parametro,))
+
+        if cursor.rowcount == 0:
+                    return jsonify({"erro": "usuário não encontrado"}), 404
+
+        conexao.commit()
+        return jsonify({"mensagem": "Conta excluída permanentemente."}), 200
+    except Exception as e:
+        return jsonify({"erro": "Erro ao excluir a conta"}), 500
+    finally:
+        conexao.close()
+
+    
+        
+
+
+
 
 
 if __name__ == "__main__":
