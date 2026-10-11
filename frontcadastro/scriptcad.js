@@ -46,8 +46,8 @@ formulario.addEventListener("submit", async function(evento) {
         console.log("Iniciando a contagem de 1.5 segundos...");
 
         setTimeout(() => {
-            console.log("Redirecionando agora para:", "../frontlogin/index.html");
-            window.location.href = "../frontlogin/index.html";
+            console.log("Redirecionando agora para:", "../index.html");
+            window.location.href = "../index.html";
 
         }, 2000);
     } catch (erro) {

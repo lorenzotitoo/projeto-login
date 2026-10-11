@@ -1,13 +1,13 @@
 const tokenAcesso = localStorage.getItem("token");
 
 if (!tokenAcesso) {
-    window.location.href = "../frontlogin/index.html";
+    window.location.href = "../index.html";
 }
 
 function fazerLogout() {
     localStorage.removeItem("token");
     localStorage.removeItem("usuarioLogado");
-    window.location.href = "../frontlogin/index.html";
+    window.location.href = "../index.html";
 }
 
 document.getElementById("sair").addEventListener("click", function () {
@@ -35,7 +35,7 @@ async function carregarPerfil() {
         document.getElementById("email-usuario").textContent = usuario.email;
     } catch (erro) {
         console.error(erro);
-        window.location.href = "../frontlogin/index.html";
+        window.location.href = "../index.html";
     }
 }
 
