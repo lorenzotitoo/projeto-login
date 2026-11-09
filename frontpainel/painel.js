@@ -146,7 +146,7 @@ btnDeletar.addEventListener('click', async function() {
     } catch (erro) {
         alert("Erro ao conectar com o servidor.");
         btnDeletar.disabled = false;
-        btnDeletar.textContent = "Excluir Minha Conta Definitivamente";
+        btnDeletar.textContent = "Deletar Perfil";
     }
 
 });

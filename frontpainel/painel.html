@@ -4,32 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel</title>
+    <link rel="stylesheet" href="painel.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-    <h1>Painel</h1>
-    <p>Bem-vindo(a), <span id="nome-usuario"></span>!</p>
-    <p>E-mail: <span id="email-usuario"></span></p>
-    
-    
-    <h2>Edite seu perfil:</h2>
-    <form id="form-editar">
-        <label for="novo-nome">
-            <input type="text" name="nome" id="novo-nome" placeholder="seu nome" required minlength="3" maxlength="30">
-        </label> <br>
-        <label for="nova-senha">
-            <input type="password" name="senha" id="nova-senha" placeholder="nova senha" autocomplete="current-password" required minlength="6">
-        </label> <br>
-        <label for="confirma-senha">
-            <input type="password" name="confirmasenha" id="confirma-senha" placeholder="confirme sua senha" autocomplete="new-password" required minlength="6">
-        </label>
-        <button type="submit" id="btn-editar">Editar</button> <br>
-        <p id="msg-editar"></p>
-    </form>
-    
-    <button id="btn-deletar">Deletar Perfil</button> <br>
-    <button id="sair">Sair</button>
-    
-    
+    <main class="cartao">
+        <div class="banner"></div>
+
+        <div class="conteudo">
+            <section class="identidade">
+                <h1>Painel</h1>
+                <p class="boas-vindas">Bem-vindo(a), <span id="nome-usuario"></span>!</p>
+                <p class="email">
+                    <span class="material-icons">mail</span>
+                    <span id="email-usuario"></span>
+                </p>
+            </section>
+
+            <section>
+                <h2>Edite seu perfil</h2>
+                <p class="dica">Preencha só o que quiser alterar.</p>
+
+                <form id="form-editar" autocomplete="off">
+                    <div class="campo">
+                        <span class="material-icons">person</span>
+                        <label for="novo-nome">
+                            <input type="text" name="nome" id="novo-nome" placeholder="novo nome" minlength="3" maxlength="30">
+                        </label>
+                    </div>
+                    <div class="campo">
+                        <span class="material-icons">key</span>
+                        <label for="nova-senha">
+                            <input type="password" name="senha" id="nova-senha" placeholder="nova senha" autocomplete="new-password" minlength="6">
+                        </label>
+                    </div>
+                    <div class="campo">
+                        <span class="material-icons">key</span>
+                        <label for="confirma-senha">
+                            <input type="password" name="confirmasenha" id="confirma-senha" placeholder="confirme a nova senha" autocomplete="new-password" minlength="6">
+                        </label>
+                    </div>
+
+                    <button type="submit" id="btn-editar">Salvar alterações</button>
+                    <p id="msg-editar"></p>
+                </form>
+            </section>
+
+            <div class="acoes">
+                <button type="button" id="sair">Sair</button>
+                <button type="button" id="btn-deletar">Deletar Perfil</button>
+            </div>
+        </div>
+    </main>
+
     <script src="painel.js"></script>
 </body>
 </html>
