@@ -18,7 +18,7 @@ document.getElementById("sair").addEventListener("click", function () {
 
 async function carregarPerfil() {
     try {
-        const resposta = await fetch("http://127.0.0.1:5000/perfil", {
+        const resposta = await fetch(`${API_URL}/perfil`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${tokenAcesso}`
@@ -77,7 +77,7 @@ formEditar.addEventListener('submit', async function(evento){
     msgEditar.innerText = "Atualizando...";
 
     try {
-        const resposta = await fetch(`http://127.0.0.1:5000/usuarios/${idUsuario}`, {
+        const resposta = await fetch(`${API_URL}/usuarios/${idUsuario}`, {
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json",
@@ -125,7 +125,7 @@ btnDeletar.addEventListener('click', async function() {
     btnDeletar.textContent = "Excluindo..."
 
     try {
-        const resposta = await fetch(`http://127.0.0.1:5000/usuarios/${idUsuario}`, {
+        const resposta = await fetch(`${API_URL}/usuarios/${idUsuario}`, {
             method: 'DELETE',
             headers: {
                 "Authorization": "Bearer " + tokenAcesso

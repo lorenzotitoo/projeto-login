@@ -6,6 +6,8 @@ const botao = document.getElementById("join");
 
 const token = new URLSearchParams(window.location.search).get("token");
 
+history.replaceState(null, "", window.location.pathname);
+
 if (!token) {
     textoMsg.textContent = "Link inválido.";
     botao.disabled = true;
@@ -27,7 +29,7 @@ formulario.addEventListener("submit", async function (evento) {
     botao.disabled = true;
 
     try {
-        const resposta = await fetch("http://127.0.0.1:5000/redefinir-senha", {
+        const resposta = await fetch(`${API_URL}/redefinir-senha`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ token: token, senha: senha })

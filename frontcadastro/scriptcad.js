@@ -24,7 +24,7 @@ formulario.addEventListener("submit", async function(evento) {
     botaoCadastrar.disabled = true;
 
     try {
-        const resposta = await fetch("http://127.0.0.1:5000/usuarios", {
+        const resposta = await fetch(`${API_URL}/usuarios`, {
             method: "POST",
             headers: {
                 "content-type": "application/json"

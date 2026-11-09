@@ -10,7 +10,7 @@ formulario.addEventListener("submit", async function (evento) {
     textoMsg.textContent = "";
 
     try {
-        const resposta = await fetch("http://127.0.0.1:5000/esqueci-senha", {
+        const resposta = await fetch(`${API_URL}/esqueci-senha`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email: inputEmail.value })

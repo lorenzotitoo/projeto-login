@@ -14,7 +14,7 @@ formulario.addEventListener('submit', async function(evento) {
     const senha = inputSenha.value;
 
     try {
-        const resposta = await fetch("http://127.0.0.1:5000/login", {
+        const resposta = await fetch(`${API_URL}/login`, {
             method: "POST",
             headers: {
                 "content-type": "application/json"
