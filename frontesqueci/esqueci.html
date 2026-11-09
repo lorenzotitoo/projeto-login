@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esqueci a Senha</title>
+    <link rel="stylesheet" href="esqueci.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <main>
+        <section id="login">
+            <div id="imagem">
+                
+            </div>
+            <div id="formulario">
+                <h1>Esqueci a Senha</h1>
+                <p id="msg">Insira seu e-mail abaixo para recuperar sua senha.</p>
+                <form id="form-login" autocomplete="on">
+                    <div class="campo">
+                        <span class="material-icons">mail</span>
+                        <label for="iemail">
+                            <input type="email" name="email" id="iemail" placeholder="seu e-mail" autocomplete="email" required maxlength="40">
+                        </label>
+                    </div>
+                    
+                    <button id="join" type="submit">Recuperar senha</button>
+                    <p id="mensagem-erro" style="color: red;"></p>
+                    
+                    <a class="botao" href="../frontcadastro/cadastro.html">
+                        Não possui conta? Cadastre-se 
+                    </a>
+                    
+                </form>
+            
+            </div>
+        </section>
+
+        
+    </main>
+    <script src="esqueci.js"></script>
+</body>
+</html>
