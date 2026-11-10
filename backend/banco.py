@@ -1,21 +1,31 @@
-import sqlite3
+import os
 from contextlib import closing
-from pathlib import Path
+import psycopg
+from psycopg.rows import dict_row
  
-CAMINHO_BANCO = Path(__file__).parent / "usuarios.db"
  
  
 def conectar_banco():
-    conexao = sqlite3.connect(str(CAMINHO_BANCO), timeout=10)
-    conexao.row_factory = sqlite3.Row
-    return conexao
+    url = os.getenv("DATABASE_URL")
+    if not url:
+        raise RuntimeError("DATABASE_URL não definida (veja o .env)")
+ 
+    
+    return psycopg.connect(
+        url,
+        row_factory=dict_row,
+        prepare_threshold=None,
+        connect_timeout=15,
+    )
  
  
 def inicializar_banco():
     with closing(conectar_banco()) as conexao:
+        
+        conexao.execute("SELECT pg_advisory_xact_lock(727001)")
         conexao.execute('''
             CREATE TABLE IF NOT EXISTS usuarios (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
                 nome TEXT NOT NULL,
                 email TEXT NOT NULL UNIQUE,
                 senha TEXT NOT NULL
@@ -23,11 +33,14 @@ def inicializar_banco():
         ''')
         conexao.execute('''
             CREATE TABLE IF NOT EXISTS reset_tokens (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                usuario_id INTEGER NOT NULL,
+                id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+                usuario_id BIGINT NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
                 token_hash TEXT NOT NULL,
-                expira_em TEXT NOT NULL,
-                usado INTEGER DEFAULT 0
+                expira_em TIMESTAMPTZ NOT NULL,
+                usado BOOLEAN NOT NULL DEFAULT FALSE
             )
         ''')
+        conexao.execute(
+            "CREATE INDEX IF NOT EXISTS idx_reset_tokens_hash ON reset_tokens (token_hash)"
+        )
         conexao.commit()
