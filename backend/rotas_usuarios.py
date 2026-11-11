@@ -43,12 +43,12 @@ def criar_usuario():
     with closing(conectar_banco()) as conexao:
         try:
             cursor = conexao.execute(
-                "INSERT INTO usuarios(nome, email, senha) VALUES(?, ?, ?)",
+                "INSERT INTO usuarios (nome, email, senha) VALUES (%s, %s, %s) RETURNING id",
                 (nome, email, senha_hash),
             )
+            novo_id = cursor.fetchone()["id"]
             conexao.commit()
-            novo_id = cursor.lastrowid
-        except sqlite3.IntegrityError:
+        except UniqueViolation:
             return jsonify({"erro": "Este e-mail já está cadastrado"}), 409
  
     return jsonify({"_id": novo_id, "mensagem": "Usuário criado com sucesso"}), 201
@@ -69,7 +69,7 @@ def login():
  
     with closing(conectar_banco()) as conexao:
         usuario = conexao.execute(
-            "SELECT * FROM usuarios WHERE email = ?", (email,)
+            "SELECT * FROM usuarios WHERE email = %s", (email,)
         ).fetchone()
  
     if usuario is None:
@@ -99,7 +99,7 @@ def perfil():
  
     with closing(conectar_banco()) as conexao:
         usuario = conexao.execute(
-            "SELECT id, nome, email FROM usuarios WHERE id = ?", (id_usuario,)
+            "SELECT id, nome, email FROM usuarios WHERE id = %s", (int(id_usuario),)
         ).fetchone()
  
     if usuario is None:
@@ -137,17 +137,17 @@ def atualizar_usuario(id_parametro):
     campos = []
     valores = []
     if nome_novo:
-        campos.append("nome = ?")
+        campos.append("nome = %s")
         valores.append(nome_novo)
     if senha_nova:
-        campos.append("senha = ?")
+        campos.append("senha = %s")
         valores.append(generate_password_hash(senha_nova))
  
     with closing(conectar_banco()) as conexao:
         try:
             # os nomes das colunas vêm só do código acima, nunca do usuário
             cursor = conexao.execute(
-                f"UPDATE usuarios SET {', '.join(campos)} WHERE id = ?",
+                f"UPDATE usuarios SET {', '.join(campos)} WHERE id = %s",
                 (*valores, id_parametro),
             )
             if cursor.rowcount == 0:
@@ -167,9 +167,8 @@ def deletar_usuario(id_parametro):
  
     with closing(conectar_banco()) as conexao:
         try:
-            # apaga também os tokens de redefinição do usuário
-            conexao.execute("DELETE FROM reset_tokens WHERE usuario_id = ?", (id_parametro,))
-            cursor = conexao.execute("DELETE FROM usuarios WHERE id = ?", (id_parametro,))
+            # os tokens de redefinição somem junto (ON DELETE CASCADE na tabela)
+            cursor = conexao.execute("DELETE FROM usuarios WHERE id = %s", (id_parametro,))
  
             if cursor.rowcount == 0:
                 return jsonify({"erro": "Usuário não encontrado"}), 404

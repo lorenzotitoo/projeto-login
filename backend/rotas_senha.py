@@ -34,23 +34,23 @@ def esqueci_senha():
  
     with closing(conectar_banco()) as conexao:
         # limpeza: tokens já expirados não servem para nada
-        conexao.execute("DELETE FROM reset_tokens WHERE expira_em < ?", (agora.isoformat(),))
+        conexao.execute("DELETE FROM reset_tokens WHERE expira_em < %s", (agora,))
  
         usuario = conexao.execute(
-            "SELECT id FROM usuarios WHERE email = ?", (email,)
+            "SELECT id FROM usuarios WHERE email = %s", (email,)
         ).fetchone()
  
         if usuario:
             # invalida pedidos anteriores desse usuário
             conexao.execute(
-                "UPDATE reset_tokens SET usado = 1 WHERE usuario_id = ? AND usado = 0",
+                "UPDATE reset_tokens SET usado = TRUE WHERE usuario_id = %s AND usado = FALSE",
                 (usuario["id"],),
             )
  
             token = secrets.token_urlsafe(32)
-            expira_em = (agora + timedelta(minutes=30)).isoformat()
+            expira_em = agora + timedelta(minutes=30)
             conexao.execute(
-                "INSERT INTO reset_tokens (usuario_id, token_hash, expira_em) VALUES (?, ?, ?)",
+                "INSERT INTO reset_tokens (usuario_id, token_hash, expira_em) VALUES (%s, %s, %s)",
                 (usuario["id"], hash_token(token), expira_em),
             )
             link = f"{frontend}/frontredefinir/redefinir.html?token={token}"
@@ -79,22 +79,22 @@ def redefinir_senha():
  
     with closing(conectar_banco()) as conexao:
         registro = conexao.execute(
-            "SELECT id, usuario_id, expira_em FROM reset_tokens WHERE token_hash = ? AND usado = 0",
+            "SELECT id, usuario_id, expira_em FROM reset_tokens WHERE token_hash = %s AND usado = FALSE",
             (hash_token(token),),
         ).fetchone()
  
-        if registro is None or datetime.fromisoformat(registro["expira_em"]) < datetime.now(timezone.utc):
+        if registro is None or registro["expira_em"] < datetime.now(timezone.utc):
             return jsonify({"erro": "Link inválido ou expirado"}), 400
  
         # marca como usado de forma atômica: dois cliques simultâneos não passam os dois
         marcado = conexao.execute(
-            "UPDATE reset_tokens SET usado = 1 WHERE id = ? AND usado = 0", (registro["id"],)
+            "UPDATE reset_tokens SET usado = TRUE WHERE id = %s AND usado = FALSE", (registro["id"],)
         )
         if marcado.rowcount == 0:
             return jsonify({"erro": "Link inválido ou expirado"}), 400
  
         conexao.execute(
-            "UPDATE usuarios SET senha = ? WHERE id = ?",
+            "UPDATE usuarios SET senha = %s WHERE id = %s",
             (generate_password_hash(senha_nova), registro["usuario_id"]),
         )
         conexao.commit()
